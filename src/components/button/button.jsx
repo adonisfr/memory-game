@@ -10,8 +10,8 @@ const Btn = styled.button`
 	font-weight: bold;
 	line-height: 22px;
 	text-align: center;
-	min-width: 62px;
-	height: 40px;
+	min-width: 40px;
+	min-height: 40px;
 
 	${(props) => {
 		switch (props.type) {
@@ -55,17 +55,20 @@ const Btn = styled.button`
 		font-size: 18px;
 		height: ${(props) => props?.sm?.height || '40px'};
 		width: ${(props) => props?.sm?.width || 'auto'};
+		border-radius: ${(props) => props?.sm?.borderRadius || ''};
 	}
 	@media ${device.tablet} {
 		font-size: ${(props) => (props.type === 'big' ? '32px' : '26px')};
 		line-height: ${(props) => (props.type === 'big' ? '40px' : '32px')};
 		height: ${(props) => props?.md?.height || props?.sm?.height || '40px'};
 		width: ${(props) => props?.md?.width || props?.sm?.width || 'auto'};
+		border-radius: ${(props) => props?.sm?.borderRadius || ''};
 	}
 	@media ${device.laptop} {
 		font-size: 18px;
 		height: ${(props) => props?.lg?.height || props?.md?.height || props?.sm?.height || '40px'};
 		width: ${(props) => props?.lg?.width || props?.md?.width || props?.sm?.width || 'auto'};
+		border-radius: ${(props) => props?.sm?.borderRadius || ''};
 
 		&:hover {
 			cursor: pointer;
@@ -73,9 +76,9 @@ const Btn = styled.button`
 	}
 `;
 
-const Button = ({ type, children, sm, md, lg, active }) => {
+const Button = ({ type, children, sm, md, lg, active, onClick }) => {
 	return (
-		<Btn type={type} sm={sm} md={md} lg={lg} active={active}>
+		<Btn type={type} sm={sm} md={md} lg={lg} active={active} onClick={onClick}>
 			{children}
 		</Btn>
 	);
@@ -96,7 +99,8 @@ Button.propTypes = {
 		height: propTypes.string,
 		width: propTypes.string
 	}),
-	active: propTypes.bool
+	active: propTypes.bool,
+	onClick: propTypes.func
 };
 
 Button.defaultProps = {
