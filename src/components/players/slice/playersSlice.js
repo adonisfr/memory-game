@@ -5,8 +5,9 @@ const playerSlice = createSlice({
 	initialState: {
 		activePlayer: 1,
 		showPlayerInTurn: true,
-		counter: 3,
-		playersList: []
+		counter: 2,
+		playersList: [],
+		showPlayerWinner: false
 	},
 	reducers: {
 		setPlayersList: (state, actions) => {
@@ -24,12 +25,21 @@ const playerSlice = createSlice({
 		setCountDown: (state, actions) => {
 			state.counter = actions.payload.counter;
 			state.showPlayerInTurn = actions.payload.showPlayerInTurn;
+		},
+		setShowPlayerWinner: (state, actions) => {
+			state.showPlayerWinner = actions.payload;
 		}
 	}
 });
 
-export const { setPlayersList, setActivePlayer, setShowPlayerInTurn, setCounter, setCountDown } =
-	playerSlice.actions;
+export const {
+	setPlayersList,
+	setActivePlayer,
+	setShowPlayerInTurn,
+	setCounter,
+	setCountDown,
+	setShowPlayerWinner
+} = playerSlice.actions;
 
 export const createPlayersList = (num) => {
 	return (dispath) => {
@@ -42,10 +52,14 @@ export const createPlayersList = (num) => {
 };
 
 export const updatePlayersScore = (counter) => {
-	return (dispath, getState) => {
+	return (dispatch, getState) => {
 		const { playersList, activePlayer } = getState().players;
+		const { items } = getState().board;
+		let totalPoints = 0;
 		const updatedPlayers = playersList.map((i) => {
+			totalPoints += i.points;
 			if (activePlayer === i.player) {
+				totalPoints += counter;
 				return {
 					...i,
 					points: i.points + counter
@@ -55,14 +69,17 @@ export const updatePlayersScore = (counter) => {
 		});
 		const count = activePlayer + 1;
 		const player = count > playersList.length ? 1 : count;
-		dispath(setActivePlayer(player));
-		dispath(setPlayersList(updatedPlayers));
-		dispath(
-			setCountDown({
-				counter: 3,
-				showPlayerInTurn: true
-			})
-		);
+		dispatch(setActivePlayer(player));
+		dispatch(setPlayersList(updatedPlayers));
+
+		if (items.length > 0 && totalPoints !== items.length / 2) {
+			dispatch(
+				setCountDown({
+					counter: 2,
+					showPlayerInTurn: true
+				})
+			);
+		}
 	};
 };
 

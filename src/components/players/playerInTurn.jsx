@@ -15,7 +15,6 @@ const Content = styled.div`
 
 const PlayerInTurn = () => {
 	const activePlayer = useSelector((state) => state.players.activePlayer);
-
 	const showPlayerInTurn = useSelector((state) => state.players.showPlayerInTurn);
 	const temporalRotated = useSelector((state) => state.board.temporalRotated);
 	const dispatch = useDispatch();
@@ -27,7 +26,7 @@ const PlayerInTurn = () => {
 		}
 	}, [temporalRotated, dispatch]);
 
-	const show = useCallback(() => {
+	const hide = useCallback(() => {
 		return dispatch(setShowPlayerInTurn(false));
 	}, [dispatch]);
 
@@ -35,7 +34,7 @@ const PlayerInTurn = () => {
 		<Modal show={showPlayerInTurn}>
 			<Content>
 				<h3>{`Player ${activePlayer} in turn`}</h3>
-				<CountDown callBack={show} />
+				<CountDown callBack={hide} />
 			</Content>
 		</Modal>
 	);

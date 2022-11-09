@@ -24,15 +24,28 @@ const BoardSlice = createSlice({
 			state.activatedItems = [...state.activatedItems, actions.payload];
 		},
 		setStat: (state, actions) => {
-			const { movements, good } = actions.payload;
-			state.movements = movements;
-			state.goodMove = good;
+			// const { movements, good } = actions.payload;
+			state.movements = actions.payload;
+			// state.goodMove = good;
+		},
+		resetBoard: (state, actions) => {
+			state.activatedItems = [];
+			state.movements = 0;
+			state.goodMove = false;
+			state.temporalActive = {};
+			state.temporalRotated = [1, 2];
 		}
 	}
 });
 
-export const { setItems, setTemporalActive, setTemporalRotated, setActivatedItems, setStat } =
-	BoardSlice.actions;
+export const {
+	setItems,
+	setTemporalActive,
+	setTemporalRotated,
+	setActivatedItems,
+	setStat,
+	resetBoard
+} = BoardSlice.actions;
 
 export const getItems = (size) => {
 	return (dispatch) => {
@@ -58,13 +71,16 @@ export const getItems = (size) => {
  */
 export const updateStats = (stats) => {
 	return (dispatch, getState) => {
-		const { good, moved } = stats || {};
+		// const { good, moved } = stats || {};
 		const { movements } = getState().board;
-		const tmp = {
-			movements: moved ? movements + 1 : movements,
-			goodMove: good
-		};
-		dispatch(setStat(tmp));
+		const count = movements + 1;
+		// console.log('movements', count);
+		// const tmp = {
+		// 	// movements: moved ? movements + 1 : movements,
+		// 	movements: count
+		// 	// goodMove: good
+		// };
+		dispatch(setStat(count));
 	};
 };
 

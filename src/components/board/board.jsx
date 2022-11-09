@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import PlayerWinner from '../players/playerWinner';
 import Card from './card';
 import { getItems } from './slice/boardSlice';
 
@@ -39,6 +40,7 @@ const Board = () => {
 					{i}
 				</Card>
 			))}
+			<PlayerWinner items={items} />
 		</BoardContainer>
 	);
 };

@@ -8,7 +8,6 @@ const CountDown = ({ times, callBack }) => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		console.log('count', counter);
 		if (counter) {
 			setTimeout(() => {
 				dispatch(setCounter(counter - 1));
