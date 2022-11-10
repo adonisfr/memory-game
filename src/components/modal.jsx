@@ -15,9 +15,9 @@ const ModalContainer = styled.div`
 const ModalContent = styled.div`
 	position: absolute;
 	top: ${(props) => (props.top ? props.top : '-300px')};
-	border: 1px solid gray;
+	// border: 1px solid gray;
 	background: white;
-	padding: 0.5em;
+	// padding: 0.5em;
 	border-radius: 10px;
 	border: 0px solid;
 
@@ -39,7 +39,8 @@ const ModalContent = styled.div`
 const ContentWraper = styled.div`
 	display: flex;
 	flex-direction: column;
-	gap: 20px;
+	gap: 12px;
+	padding: 20px 10px;
 `;
 
 const Modal = ({ children, show, top, title }) => {

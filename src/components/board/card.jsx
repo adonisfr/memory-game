@@ -42,6 +42,9 @@ const Front = styled.div`
 `;
 
 const Back = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	position: absolute;
 	backface-visibility: hidden;
 	height: 100%;
@@ -56,15 +59,34 @@ const Item = styled.div`
 	justify-content: center;
 	align-items: center;
 	height: 100%;
+	color: #fcfcfc;
+	font-weight: 700;
+
+	@media ${device.mobileM} {
+		height: ${(props) => props?.sm?.height || '40px'};
+		width: ${(props) => props?.sm?.width || 'auto'};
+		font-size: ${(props) => props?.sm?.fontSize || ''};
+	}
+	@media ${device.tablet} {
+		height: ${(props) => props?.md?.height || props?.sm?.height || '40px'};
+		width: ${(props) => props?.md?.width || props?.sm?.width || 'auto'};
+		font-size: ${(props) => props?.md?.fontSize || props?.sm?.fontSize || ''};
+	}
+	@media ${device.laptop} {
+		height: ${(props) => props?.lg?.height || props?.md?.height || props?.sm?.height || '40px'};
+		width: ${(props) => props?.lg?.width || props?.md?.width || props?.sm?.width || 'auto'};
+		font-size: ${(props) => props?.lg?.fontSize || props?.md?.fontSize || ''};
+	}
 `;
 
-const Card = ({ value, index, sm, md, lg, size, children }) => {
+const Card = ({ value, index, sm, md, lg, font, size, children }) => {
 	const [rotated, setRotated] = useState(false);
 	const temporalActive = useSelector((state) => state.board.temporalActive);
 	const activatedItems = useSelector((state) => state.board.activatedItems);
 	const temporalRotated = useSelector((state) => state.board.temporalRotated);
 	const dispatch = useDispatch();
-	const borderRadius = size === 4 ? '59px' : '41px';
+	// const borderRadius = size === 4 ? '59px' : '41px';
+	const borderRadius = '59px';
 
 	const active = activatedItems.some((i) => {
 		return i === value;
@@ -117,7 +139,9 @@ const Card = ({ value, index, sm, md, lg, size, children }) => {
 		>
 			<Front borderRadius={borderRadius}></Front>
 			<Back borderRadius={borderRadius} active={active}>
-				<Item>{children}</Item>
+				<Item sm={{ fontSize: font?.sm?.fontSize }} md={{ fontSize: font?.sm?.fontSize }}>
+					{children}
+				</Item>
 			</Back>
 		</StyledCard>
 	);
@@ -140,6 +164,7 @@ Card.propTypes = {
 		height: propTypes.string,
 		width: propTypes.string
 	}),
+	font: propTypes.objectOf(propTypes.any),
 	onClick: propTypes.func
 };
 
@@ -149,7 +174,8 @@ Card.defaultProps = {
 	sm: {},
 	md: {},
 	lg: {},
-	index: 0
+	index: 0,
+	font: {}
 };
 
 export default Card;

@@ -29,8 +29,9 @@ const BoardSlice = createSlice({
 			// state.goodMove = good;
 		},
 		resetBoard: (state, actions) => {
+			state.items = [];
 			state.activatedItems = [];
-			state.movements = 0;
+			state.movements = -1;
 			state.goodMove = false;
 			state.temporalActive = {};
 			state.temporalRotated = [1, 2];

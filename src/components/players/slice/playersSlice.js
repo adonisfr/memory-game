@@ -7,7 +7,8 @@ const playerSlice = createSlice({
 		showPlayerInTurn: true,
 		counter: 2,
 		playersList: [],
-		showPlayerWinner: false
+		showPlayerWinner: false,
+		times: '00:00'
 	},
 	reducers: {
 		setPlayersList: (state, actions) => {
@@ -28,6 +29,9 @@ const playerSlice = createSlice({
 		},
 		setShowPlayerWinner: (state, actions) => {
 			state.showPlayerWinner = actions.payload;
+		},
+		setTime: (state, actions) => {
+			state.times = actions.payload;
 		}
 	}
 });
@@ -38,7 +42,8 @@ export const {
 	setShowPlayerInTurn,
 	setCounter,
 	setCountDown,
-	setShowPlayerWinner
+	setShowPlayerWinner,
+	setTime
 } = playerSlice.actions;
 
 export const createPlayersList = (num) => {

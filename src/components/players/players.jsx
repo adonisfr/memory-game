@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import PlayerInTurn from './playerInTurn';
 import ItemPlayer from './itemPlayer';
 import { createPlayersList } from './slice/playersSlice';
+import OnePlayerStats from './onePlayerStats';
 
 const Container = styled.div`
 	display: flex;
@@ -15,14 +16,13 @@ const Players = () => {
 	const players = useSelector((state) => state.game.players);
 	const playersList = useSelector((state) => state.players.playersList);
 	const dispatch = useDispatch();
-	// const activePlayer = useSelector((state) => state.players.activePlayer);
 
 	useEffect(() => {
 		dispatch(createPlayersList(players));
 	}, [players, dispatch]);
 
 	if (playersList.length <= 1) {
-		return <div>timer</div>;
+		return <OnePlayerStats />;
 	}
 
 	return (

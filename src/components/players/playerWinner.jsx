@@ -1,36 +1,67 @@
 import propTypes from 'prop-types';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { getItems, resetBoard, updateStats } from '../board/slice/boardSlice';
 import Button from '../button/button';
 import Modal from '../modal';
-import { setShowPlayerWinner } from './slice/playersSlice';
+import { resetGame } from '../startGame/slice/startGameSlice';
+import device from '../utils/device';
+import { setShowPlayerWinner, setTime } from './slice/playersSlice';
 
 const Winners = styled.div`
 	display: flex;
-	width: 279px;
 	flex-direction: column;
+	align-items: center;
 	gap: 24px;
+
+	@media (${device.mobileM}) {
+		width: 327px;
+	}
+
+	@media (${device.tablet}) {
+		width: 654px;
+		gap: 40px;
+		padding: 20px 0px;
+	}
 `;
 
 const PlayersList = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
+
+	@media (${device.tablet}) {
+		gap: 12px;
+	}
 `;
 
 const PlayerItem = styled.div`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	height: 48px;
 	background: ${(props) => props.background};
 	border-radius: 5px;
 	padding: 0px 16px;
 
 	span {
 		color: ${(props) => props.color};
+	}
+
+	b {
+		color: ${(props) => props.color};
+		font-size: 20px;
+		line-height: 25px;
+	}
+
+	@media (${device.mobileM}) {
+		height: 48px;
+		width: 279px;
+	}
+
+	@media (${device.tablet}) {
+		height: 72px;
+		width: 542px;
 	}
 `;
 
@@ -45,6 +76,7 @@ const ContentTitle = styled.div`
 		line-height: 30px;
 		text-align: center;
 		color: #152938;
+		margin: 1px;
 	}
 
 	p {
@@ -53,23 +85,38 @@ const ContentTitle = styled.div`
 		line-height: 17px;
 		color: #7191a5;
 	}
+
+	@media (${device.tablet}) {
+		h1 {
+			font-size: 48px;
+			line-height: 60px;
+		}
+
+		p {
+			font-size: 18px;
+			line-height: 22px;
+		}
+	}
 `;
 
 const ContentButton = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 16px;
+
+	@media (${device.tablet}) {
+		flex-direction: row;
+	}
 `;
 
 const PlayerWinner = ({ items }) => {
-	const [show, setShow] = useState(false);
 	const showPlayerWinner = useSelector((state) => state.players.showPlayerWinner);
-	// const players = useSelector(state=>state.game.players)
 	const playersList = useSelector((state) => state.players.playersList);
 	const activatedItems = useSelector((state) => state.board.activatedItems);
 	const movements = useSelector((state) => state.board.movements);
 	const gridSize = useSelector((state) => state.game.gridSize);
 	const temporalRotated = useSelector((state) => state.board.temporalRotated);
+	const times = useSelector((state) => state.players.times);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -81,7 +128,6 @@ const PlayerWinner = ({ items }) => {
 	useEffect(() => {
 		if (items.length > 0 && activatedItems.length === items.length / 2) {
 			dispatch(setShowPlayerWinner(true));
-			setShow(true);
 		}
 	}, [activatedItems, dispatch, items]);
 
@@ -108,10 +154,18 @@ const PlayerWinner = ({ items }) => {
 	const restarGame = useCallback(() => {
 		dispatch(resetBoard());
 		dispatch(getItems(gridSize));
-		setShow(false);
+		dispatch(setShowPlayerWinner(false));
+		dispatch(setTime('00:00'));
 	}, [dispatch, gridSize]);
 
-	if (!show) {
+	const newGame = useCallback(() => {
+		dispatch(resetBoard());
+		dispatch(resetGame());
+		dispatch(setShowPlayerWinner(false));
+		dispatch(setTime('00:00'));
+	}, [dispatch]);
+
+	if (!showPlayerWinner) {
 		return null;
 	}
 	return (
@@ -135,7 +189,7 @@ const PlayerWinner = ({ items }) => {
 								color={result.maxPoints === p.points ? '#FCFCFC' : '#304859'}
 							>
 								<span>{`Player ${p.player} `}</span>
-								<span>{`${p.points} Pairs`}</span>
+								<b>{`${p.points} Pairs`}</b>
 							</PlayerItem>
 						))}
 					</PlayersList>
@@ -143,17 +197,30 @@ const PlayerWinner = ({ items }) => {
 					<PlayersList>
 						<PlayerItem background="#DFE7EC" color="#304859">
 							<span>{`Time Elapsed `}</span>
-							<span>{`Moves Taken`}</span>
+							<b>{times}</b>
 						</PlayerItem>
 						<PlayerItem background="#DFE7EC" color="#304859">
-							<span>{`Time Elapsed `}</span>
-							<span>{`${movements} Moves`}</span>
+							<span>{`Moves Taken `}</span>
+							<b>{`${movements} Moves`}</b>
 						</PlayerItem>
 					</PlayersList>
 				)}
 				<ContentButton>
-					<Button onClick={restarGame}>Restart</Button>
-					<Button type="selection">Setup New Game</Button>
+					<Button
+						onClick={restarGame}
+						sm={{ height: '48px', width: '279px' }}
+						md={{ height: '52px', width: '264px' }}
+					>
+						Restart
+					</Button>
+					<Button
+						type="selection"
+						onClick={newGame}
+						sm={{ height: '48px', width: '279px' }}
+						md={{ height: '52px', width: '264px' }}
+					>
+						Setup New Game
+					</Button>
 				</ContentButton>
 				{console.log('me pinto')}
 			</Winners>

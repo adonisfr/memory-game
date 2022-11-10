@@ -58,7 +58,8 @@ const Btn = styled.button`
 		border-radius: ${(props) => props?.sm?.borderRadius || ''};
 	}
 	@media ${device.tablet} {
-		font-size: ${(props) => (props.type === 'big' ? '32px' : '26px')};
+		font-size: ${(props) =>
+			props?.md?.fontSize ? props?.md?.fontSize : props.type === 'big' ? '32px' : '26px'};
 		line-height: ${(props) => (props.type === 'big' ? '40px' : '32px')};
 		height: ${(props) => props?.md?.height || props?.sm?.height || '40px'};
 		width: ${(props) => props?.md?.width || props?.sm?.width || 'auto'};
