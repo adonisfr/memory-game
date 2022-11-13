@@ -8,7 +8,9 @@ const playerSlice = createSlice({
 		counter: 2,
 		playersList: [],
 		showPlayerWinner: false,
-		times: '00:00'
+		times: '00:00',
+		timerIntervalId: '',
+		clearTimer: false
 	},
 	reducers: {
 		setPlayersList: (state, actions) => {
@@ -32,6 +34,12 @@ const playerSlice = createSlice({
 		},
 		setTime: (state, actions) => {
 			state.times = actions.payload;
+		},
+		setTimerIntervalId: (state, actions) => {
+			state.timerIntervalId = actions.payload || '';
+		},
+		setClearTimer: (state, actions) => {
+			state.clearTimer = actions.payload;
 		}
 	}
 });
@@ -43,8 +51,17 @@ export const {
 	setCounter,
 	setCountDown,
 	setShowPlayerWinner,
-	setTime
+	setTime,
+	setClearTimer,
+	setTimerIntervalId
 } = playerSlice.actions;
+
+export const resetTimer = () => {
+	return (dispatch) => {
+		dispatch(setClearTimer(false));
+		dispatch(setTime('00:00'));
+	};
+};
 
 export const createPlayersList = (num) => {
 	return (dispath) => {

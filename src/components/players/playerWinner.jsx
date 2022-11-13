@@ -7,7 +7,7 @@ import Button from '../button/button';
 import Modal from '../modal';
 import { resetGame } from '../startGame/slice/startGameSlice';
 import device from '../utils/device';
-import { setShowPlayerWinner, setTime } from './slice/playersSlice';
+import { resetTimer, setClearTimer, setShowPlayerWinner } from './slice/playersSlice';
 
 const Winners = styled.div`
 	display: flex;
@@ -128,6 +128,7 @@ const PlayerWinner = ({ items }) => {
 	useEffect(() => {
 		if (items.length > 0 && activatedItems.length === items.length / 2) {
 			dispatch(setShowPlayerWinner(true));
+			dispatch(setClearTimer(true));
 		}
 	}, [activatedItems, dispatch, items]);
 
@@ -155,14 +156,14 @@ const PlayerWinner = ({ items }) => {
 		dispatch(resetBoard());
 		dispatch(getItems(gridSize));
 		dispatch(setShowPlayerWinner(false));
-		dispatch(setTime('00:00'));
+		dispatch(resetTimer());
 	}, [dispatch, gridSize]);
 
 	const newGame = useCallback(() => {
 		dispatch(resetBoard());
 		dispatch(resetGame());
 		dispatch(setShowPlayerWinner(false));
-		dispatch(setTime('00:00'));
+		dispatch(resetTimer());
 	}, [dispatch]);
 
 	if (!showPlayerWinner) {

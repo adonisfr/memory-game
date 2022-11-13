@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import device from '../utils/device';
 import { useDispatch, useSelector } from 'react-redux';
 import { setGridSize, setPlayers, setStarted, setTheme } from './slice/startGameSlice';
+import { setStat } from '../board/slice/boardSlice';
 
 const Title = styled.h2`
 	line-height: 40px;
@@ -94,6 +95,7 @@ const StartGame = () => {
 	};
 
 	const handleStart = () => {
+		dispatch(setStat(0));
 		dispatch(setStarted(true));
 	};
 

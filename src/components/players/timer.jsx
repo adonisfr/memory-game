@@ -23,7 +23,7 @@ let flag = true;
 
 const Timer = () => {
 	const times = useSelector((state) => state.players.times);
-	const showPlayerWinner = useSelector((state) => state.players.showPlayerWinner);
+	const clearTimer = useSelector((state) => state.players.clearTimer);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -36,12 +36,14 @@ const Timer = () => {
 			}, 1000);
 			flag = false;
 		}
+	}, [dispatch, clearTimer]);
 
-		if (showPlayerWinner) {
+	useEffect(() => {
+		if (clearTimer) {
 			clearInterval(intervalId);
 			flag = true;
 		}
-	}, [dispatch, showPlayerWinner]);
+	}, [clearTimer]);
 
 	return (
 		<Stats>
