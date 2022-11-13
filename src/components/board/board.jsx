@@ -5,6 +5,48 @@ import PlayerWinner from '../players/playerWinner';
 import device from '../utils/device';
 import Card from './card';
 import { getItems } from './slice/boardSlice';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+	faCar,
+	faBug,
+	faGlasses,
+	faMusic,
+	faHeart,
+	faGift,
+	faHome,
+	faPlane,
+	faTrophy,
+	faBriefcase,
+	faTruck,
+	faUmbrella,
+	faCoffee,
+	faMotorcycle,
+	faHeartbeat,
+	faTry,
+	faBath,
+	faBell
+} from '@fortawesome/free-solid-svg-icons';
+
+const icons = {
+	1: faCar,
+	2: faBug,
+	3: faGlasses,
+	4: faMusic,
+	5: faHeart,
+	6: faGift,
+	7: faHome,
+	8: faPlane,
+	9: faTrophy,
+	10: faBriefcase,
+	11: faTruck,
+	12: faUmbrella,
+	13: faCoffee,
+	14: faMotorcycle,
+	15: faHeartbeat,
+	16: faTry,
+	17: faBath,
+	18: faBell
+};
 
 const BoardContainer = styled.div`
 	display: grid;
@@ -26,6 +68,7 @@ const BoardContainer = styled.div`
 const Board = () => {
 	const gridSize = useSelector((state) => state.game.gridSize);
 	const items = useSelector((state) => state.board.items);
+	const theme = useSelector((state) => state.game.theme);
 	const smHeight = gridSize === 4 ? '72.53px' : '46.88px';
 	const mdHeight = gridSize === 4 ? '118px' : '82px';
 	const smFontSize = gridSize === 4 ? '40px' : '24px';
@@ -34,8 +77,8 @@ const Board = () => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		dispatch(getItems(gridSize));
-	}, [dispatch, gridSize]);
+		dispatch(getItems(gridSize, theme));
+	}, [dispatch, gridSize, theme]);
 
 	return (
 		<BoardContainer size={gridSize} sm={{ width: '327px' }} md={{ width: '532px' }}>
@@ -59,7 +102,7 @@ const Board = () => {
 					value={i}
 					index={index}
 				>
-					{i}
+					{theme === 'number' ? i : <FontAwesomeIcon icon={icons[i]} />}
 				</Card>
 			))}
 			<PlayerWinner items={items} />

@@ -230,7 +230,7 @@ const PlayerWinner = ({ items }) => {
 };
 
 PlayerWinner.propTypes = {
-	items: propTypes.arrayOf(propTypes.number)
+	items: propTypes.arrayOf(propTypes.oneOfType([propTypes.number, propTypes.string]))
 };
 
 PlayerWinner.defaultProps = {

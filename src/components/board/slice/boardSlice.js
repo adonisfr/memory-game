@@ -24,9 +24,7 @@ const BoardSlice = createSlice({
 			state.activatedItems = [...state.activatedItems, actions.payload];
 		},
 		setStat: (state, actions) => {
-			// const { movements, good } = actions.payload;
 			state.movements = actions.payload;
-			// state.goodMove = good;
 		},
 		resetBoard: (state, actions) => {
 			state.items = [];
@@ -48,7 +46,7 @@ export const {
 	resetBoard
 } = BoardSlice.actions;
 
-export const getItems = (size) => {
+export const getItems = (size, theme) => {
 	return (dispatch) => {
 		const array = [];
 		const limit = size === 4 ? 8 : 18;
@@ -72,15 +70,8 @@ export const getItems = (size) => {
  */
 export const updateStats = (stats) => {
 	return (dispatch, getState) => {
-		// const { good, moved } = stats || {};
 		const { movements } = getState().board;
 		const count = movements + 1;
-		// console.log('movements', count);
-		// const tmp = {
-		// 	// movements: moved ? movements + 1 : movements,
-		// 	movements: count
-		// 	// goodMove: good
-		// };
 		dispatch(setStat(count));
 	};
 };
