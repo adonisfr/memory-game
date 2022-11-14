@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { getItems, resetBoard, restartBoard, setTemporalRotated } from '../board/slice/boardSlice';
+import { getItems, resetBoard } from '../board/slice/boardSlice';
 import Button from '../button/button';
 import {
 	createPlayersList,
@@ -19,6 +19,7 @@ const GameMenu = styled.div`
 	justify-content: space-between;
 	align-items: center;
 	width: 100%;
+	max-width: 1110px;
 `;
 
 const H3 = styled.h3`
@@ -26,6 +27,11 @@ const H3 = styled.h3`
 	font-weight: bold;
 	line-height: 30px;
 	color: #152938;
+
+	@media (${device.tablet}) {
+		font-size: 40px;
+		line-height: 50px;
+	}
 `;
 
 const BtnMenu = styled.div`
