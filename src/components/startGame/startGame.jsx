@@ -4,6 +4,7 @@ import device from '../utils/device';
 import { useDispatch, useSelector } from 'react-redux';
 import { setGridSize, setPlayers, setStarted, setTheme } from './slice/startGameSlice';
 import { setStat } from '../board/slice/boardSlice';
+import { setActivePlayer } from '../players/slice/playersSlice';
 
 const Title = styled.h2`
 	line-height: 40px;
@@ -88,6 +89,7 @@ const StartGame = () => {
 
 	const changePlayers = (numPlayers) => {
 		dispatch(setPlayers(numPlayers));
+		// dispatch(setActivePlayer(1));
 	};
 
 	const changeGridSize = (newGridSize) => {

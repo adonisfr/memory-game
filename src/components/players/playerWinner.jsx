@@ -223,7 +223,6 @@ const PlayerWinner = ({ items }) => {
 						Setup New Game
 					</Button>
 				</ContentButton>
-				{console.log('me pinto')}
 			</Winners>
 		</Modal>
 	);

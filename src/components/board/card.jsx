@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 import propTypes from 'prop-types';
 import device from '../utils/device';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
 	setActivatedItems,
+	setResetRotated,
 	setTemporalActive,
 	setTemporalRotated,
 	updateStats
@@ -84,8 +85,8 @@ const Card = ({ value, index, sm, md, lg, font, size, children }) => {
 	const temporalActive = useSelector((state) => state.board.temporalActive);
 	const activatedItems = useSelector((state) => state.board.activatedItems);
 	const temporalRotated = useSelector((state) => state.board.temporalRotated);
+	const resetRotated = useSelector((state) => state.board.resetRotated);
 	const dispatch = useDispatch();
-	// const borderRadius = size === 4 ? '59px' : '41px';
 	const borderRadius = '59px';
 
 	const active = activatedItems.some((i) => {
@@ -102,7 +103,14 @@ const Card = ({ value, index, sm, md, lg, font, size, children }) => {
 		}
 	}, [temporalRotated, dispatch, active]);
 
-	const handleRotate = () => {
+	useEffect(() => {
+		if (resetRotated) {
+			dispatch(setResetRotated(false));
+			setRotated(false);
+		}
+	}, [resetRotated, dispatch]);
+
+	const handleRotate = useCallback(() => {
 		if (!active) {
 			if (!rotated) {
 				setRotated(true);
@@ -126,7 +134,7 @@ const Card = ({ value, index, sm, md, lg, font, size, children }) => {
 				dispatch(setTemporalActive(''));
 			}
 		}
-	};
+	}, [dispatch, rotated, temporalActive, value, index, active]);
 
 	return (
 		<StyledCard

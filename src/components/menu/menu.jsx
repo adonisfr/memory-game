@@ -1,11 +1,18 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { getItems, resetBoard } from '../board/slice/boardSlice';
+import { getItems, resetBoard, restartBoard, setTemporalRotated } from '../board/slice/boardSlice';
 import Button from '../button/button';
-import { resetTimer, setActivePlayer, setClearTimer } from '../players/slice/playersSlice';
+import {
+	createPlayersList,
+	resetPlayers,
+	resetTimer,
+	setActivePlayer,
+	setClearTimer
+} from '../players/slice/playersSlice';
 import { resetGame } from '../startGame/slice/startGameSlice';
 import device from '../utils/device';
+import ModalMenu from './modalMenu';
 
 const GameMenu = styled.div`
 	display: flex;
@@ -42,6 +49,7 @@ const ContentMenu = styled.div`
 
 const Menu = () => {
 	const gridSize = useSelector((state) => state.game.gridSize);
+	const players = useSelector((state) => state.game.players);
 
 	const dispatch = useDispatch();
 
@@ -49,18 +57,21 @@ const Menu = () => {
 		dispatch(setClearTimer(true));
 		dispatch(resetBoard());
 		dispatch(getItems(gridSize));
+		if (players !== 1) {
+			dispatch(createPlayersList(players));
+		}
 		setTimeout(() => {
 			dispatch(setActivePlayer(1));
 			dispatch(resetTimer());
 		}, 300);
-	}, [dispatch, gridSize]);
+	}, [dispatch, gridSize, players]);
 
 	const newGame = useCallback(() => {
 		dispatch(setClearTimer(true));
-		// dispatch(resetBoard());
+		dispatch(resetBoard());
 		setTimeout(() => {
 			dispatch(resetGame());
-			dispatch(resetTimer());
+			dispatch(resetPlayers());
 		}, 300);
 	}, [dispatch]);
 
@@ -68,7 +79,7 @@ const Menu = () => {
 		<GameMenu>
 			<H3>memory</H3>
 			<BtnMenu>
-				<Button>Menu</Button>
+				<ModalMenu restarGame={restarGame} newGame={newGame} />
 			</BtnMenu>
 			<ContentMenu>
 				<Button md={{ height: '52px', width: '127px', fontSize: '20px' }} onClick={restarGame}>

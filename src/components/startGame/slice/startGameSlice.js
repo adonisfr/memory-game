@@ -1,13 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const initialState = {
+	theme: 'number',
+	players: 1,
+	gridSize: 4,
+	started: false
+};
+
 const startGameSlice = createSlice({
 	name: 'game',
-	initialState: {
-		theme: 'number',
-		players: 1,
-		gridSize: 4,
-		started: false
-	},
+	initialState,
 	reducers: {
 		setTheme: (state, action) => {
 			state.theme = action.payload;
@@ -21,12 +23,7 @@ const startGameSlice = createSlice({
 		setStarted: (state, action) => {
 			state.started = action.payload;
 		},
-		resetGame: (state, actions) => {
-			state.theme = 'number';
-			state.players = 1;
-			state.gridSize = 4;
-			state.started = false;
-		}
+		resetGame: (state) => initialState
 	}
 });
 

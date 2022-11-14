@@ -1,17 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const initialState = {
+	activePlayer: 1,
+	showPlayerInTurn: true,
+	counter: 2, // time in seconds between players
+	playersList: [],
+	showPlayerWinner: false,
+	times: '00:00',
+	timerIntervalId: '',
+	clearTimer: false
+};
+
 const playerSlice = createSlice({
 	name: 'players',
-	initialState: {
-		activePlayer: 1,
-		showPlayerInTurn: true,
-		counter: 2,
-		playersList: [],
-		showPlayerWinner: false,
-		times: '00:00',
-		timerIntervalId: '',
-		clearTimer: false
-	},
+	initialState,
 	reducers: {
 		setPlayersList: (state, actions) => {
 			state.playersList = actions.payload;
@@ -40,7 +42,8 @@ const playerSlice = createSlice({
 		},
 		setClearTimer: (state, actions) => {
 			state.clearTimer = actions.payload;
-		}
+		},
+		resetPlayers: () => initialState
 	}
 });
 
@@ -53,7 +56,8 @@ export const {
 	setShowPlayerWinner,
 	setTime,
 	setClearTimer,
-	setTimerIntervalId
+	setTimerIntervalId,
+	resetPlayers
 } = playerSlice.actions;
 
 export const resetTimer = () => {
@@ -73,7 +77,7 @@ export const createPlayersList = (num) => {
 	};
 };
 
-export const updatePlayersScore = (counter) => {
+export const updatePlayersScore = (points) => {
 	return (dispatch, getState) => {
 		const { playersList, activePlayer } = getState().players;
 		const { items } = getState().board;
@@ -81,10 +85,10 @@ export const updatePlayersScore = (counter) => {
 		const updatedPlayers = playersList.map((i) => {
 			totalPoints += i.points;
 			if (activePlayer === i.player) {
-				totalPoints += counter;
+				totalPoints += points;
 				return {
 					...i,
-					points: i.points + counter
+					points: i.points + points
 				};
 			}
 			return i;

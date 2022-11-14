@@ -1,15 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const initialState = {
+	items: [],
+	temporalActive: {},
+	temporalRotated: [],
+	activatedItems: [],
+	movements: 0,
+	goodMove: false,
+	resetRotated: true
+};
+
 const BoardSlice = createSlice({
 	name: 'board',
-	initialState: {
-		items: [],
-		temporalActive: {},
-		temporalRotated: [],
-		activatedItems: [],
-		movements: 0,
-		goodMove: false
-	},
+	initialState,
 	reducers: {
 		setItems: (state, actions) => {
 			state.items = actions.payload;
@@ -26,14 +29,10 @@ const BoardSlice = createSlice({
 		setStat: (state, actions) => {
 			state.movements = actions.payload;
 		},
-		resetBoard: (state, actions) => {
-			state.items = [];
-			state.activatedItems = [];
-			state.movements = -1;
-			state.goodMove = false;
-			state.temporalActive = {};
-			state.temporalRotated = [1, 2];
-		}
+		setResetRotated: (state, actions) => {
+			state.resetRotated = actions.payload;
+		},
+		resetBoard: () => initialState
 	}
 });
 
@@ -43,10 +42,12 @@ export const {
 	setTemporalRotated,
 	setActivatedItems,
 	setStat,
-	resetBoard
+	resetBoard,
+	setResetRotated,
+	restartBoard
 } = BoardSlice.actions;
 
-export const getItems = (size, theme) => {
+export const getItems = (size) => {
 	return (dispatch) => {
 		const array = [];
 		const limit = size === 4 ? 8 : 18;
@@ -63,7 +64,7 @@ export const getItems = (size, theme) => {
 };
 
 /**
- * Update temporalRotated, movements and goodMove
+ * Update temporalRotated, movements
  *
  * @param {*} stats
  * @returns

@@ -1,6 +1,5 @@
 import propTypes from 'prop-types';
 import styled from 'styled-components';
-import device from './utils/device';
 
 const ModalContainer = styled.div`
 	position: absolute;
@@ -10,30 +9,16 @@ const ModalContainer = styled.div`
 	height: 100vh;
 	width: 100vw;
 	background: rgba(116, 115, 115, 0.6);
+	z-index: 1;
+	left: 0px;
 `;
 
 const ModalContent = styled.div`
 	position: absolute;
 	top: ${(props) => (props.top ? props.top : '-300px')};
-	// border: 1px solid gray;
 	background: white;
-	// padding: 0.5em;
 	border-radius: 10px;
 	border: 0px solid;
-
-	// @media (${device.mobileM}) {
-	// 	max-width: 300px;
-	// }
-
-	// @media ${device.tablet} {
-	// 	max-width: 654px};
-	// }
-
-	// @media ${device.laptop} {
-	// 	&:hover {
-	// 		cursor: pointer;
-	// 	}
-	// }
 `;
 
 const ContentWraper = styled.div`
