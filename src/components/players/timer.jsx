@@ -27,8 +27,8 @@ const Timer = () => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		let seconds = 0;
 		if (flag) {
+			let seconds = 0;
 			intervalId = setInterval(() => {
 				seconds += 1000;
 				const timeString = timeConverter(seconds);

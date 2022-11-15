@@ -7,7 +7,14 @@ import Button from '../button/button';
 import Modal from '../modal';
 import { resetGame } from '../startGame/slice/startGameSlice';
 import device from '../utils/device';
-import { resetTimer, setClearTimer, setShowPlayerWinner } from './slice/playersSlice';
+import {
+	createPlayersList,
+	resetPlayers,
+	resetTimer,
+	setActivePlayer,
+	setClearTimer,
+	setShowPlayerWinner
+} from './slice/playersSlice';
 
 const Winners = styled.div`
 	display: flex;
@@ -117,6 +124,7 @@ const PlayerWinner = ({ items }) => {
 	const gridSize = useSelector((state) => state.game.gridSize);
 	const temporalRotated = useSelector((state) => state.board.temporalRotated);
 	const times = useSelector((state) => state.players.times);
+	const players = useSelector((state) => state.game.players);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -153,17 +161,27 @@ const PlayerWinner = ({ items }) => {
 	}, [playersList]);
 
 	const restarGame = useCallback(() => {
+		dispatch(setShowPlayerWinner(false));
+		dispatch(setClearTimer(true));
 		dispatch(resetBoard());
 		dispatch(getItems(gridSize));
-		dispatch(setShowPlayerWinner(false));
-		dispatch(resetTimer());
-	}, [dispatch, gridSize]);
+		if (players !== 1) {
+			dispatch(createPlayersList(players));
+		}
+		setTimeout(() => {
+			dispatch(setActivePlayer(1));
+			dispatch(resetTimer());
+		}, 300);
+	}, [dispatch, gridSize, players]);
 
 	const newGame = useCallback(() => {
-		dispatch(resetBoard());
-		dispatch(resetGame());
 		dispatch(setShowPlayerWinner(false));
-		dispatch(resetTimer());
+		dispatch(setClearTimer(true));
+		dispatch(resetBoard());
+		setTimeout(() => {
+			dispatch(resetGame());
+			dispatch(resetPlayers());
+		}, 300);
 	}, [dispatch]);
 
 	if (!showPlayerWinner) {

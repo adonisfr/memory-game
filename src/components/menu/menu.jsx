@@ -77,6 +77,7 @@ const Menu = () => {
 		dispatch(resetBoard());
 		setTimeout(() => {
 			dispatch(resetGame());
+			dispatch(resetTimer());
 			dispatch(resetPlayers());
 		}, 300);
 	}, [dispatch]);

@@ -21,7 +21,7 @@ const Players = () => {
 		dispatch(createPlayersList(players));
 	}, [players, dispatch]);
 
-	if (playersList.length <= 1) {
+	if (playersList.length === 1) {
 		return <OnePlayerStats />;
 	}
 

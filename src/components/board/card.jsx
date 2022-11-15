@@ -30,6 +30,10 @@ const StyledCard = styled.div`
 	@media ${device.laptop} {
 		height: ${(props) => props?.lg?.height || props?.md?.height || props?.sm?.height || '40px'};
 		width: ${(props) => props?.lg?.width || props?.md?.width || props?.sm?.width || 'auto'};
+
+		&:hover {
+			cursor: pointer;
+		}
 	}
 `;
 
@@ -40,6 +44,12 @@ const Front = styled.div`
 	width: 100%;
 	background: #304859;
 	border-radius: ${(props) => props.borderRadius};
+
+	@media (${device.laptop}) {
+		&:hover {
+			background: #6395b8;
+		}
+	}
 `;
 
 const Back = styled.div`
@@ -51,7 +61,7 @@ const Back = styled.div`
 	height: 100%;
 	width: 100%;
 	transform: rotateY(180deg);
-	background: ${(props) => (props.active ? 'red' : '#979797')};
+	background: ${(props) => (props.active ? '#FDA214' : '#979797')};
 	border-radius: ${(props) => props.borderRadius};
 `;
 

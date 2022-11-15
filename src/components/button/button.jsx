@@ -20,7 +20,7 @@ const Btn = styled.button`
 					background-color: #fda214;
 
 					&:hover {
-						background-color: red;
+						background-color: #ffb84a;
 					}
 				`;
 			case 'secundary':
