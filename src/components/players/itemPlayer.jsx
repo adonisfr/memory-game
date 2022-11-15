@@ -47,7 +47,7 @@ const Triangle = styled.div`
 		}
 	}
 
-	@media (${device.tablet}) {
+	@media (${device.laptop}) {
 		div {
 			top: -50px;
 		}
@@ -64,7 +64,7 @@ const Content = styled.div`
 		align-items: flex-start;
 	}
 
-	@media (${device.tablet}) {
+	@media (${device.laptop}) {
 		flex-direction: row;
 		justify-content: space-between;
 		align-items: center;
